@@ -1,0 +1,96 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Сотрудники</h2>
+  <a routerLink="/employees/add" class="btn btn-success">
+    <i class="bi bi-plus-lg me-1"></i> Добавить
+  </a>
+</div>
+
+<!-- Панель фильтров и настроек -->
+<div class="card p-3 mb-4 shadow-sm bg-light">
+  <div class="row g-3 align-items-end">
+    <div class="col-md-3">
+      <label class="form-label">Поиск по Фамилии</label>
+      <input type="text" class="form-control" [(ngModel)]="searchSurname" (input)="loadEmployees()" placeholder="Введите фамилию...">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Должность</label>
+      <input type="text" class="form-control" [(ngModel)]="searchPosition" (input)="loadEmployees()" placeholder="Фильтр по должности...">
+    </div>
+
+    <!-- Переключатель вида -->
+    <div class="col-md-6 text-end">
+      <div class="btn-group">
+        <button class="btn btn-outline-primary" [class.active]="viewMode === 'table'" (click)="viewMode = 'table'" title="Таблица">
+          <i class="bi bi-table"></i>
+        </button>
+        <button class="btn btn-outline-primary" [class.active]="viewMode === 'cards'" (click)="viewMode = 'cards'" title="Карточки">
+          <i class="bi bi-grid-3x3-gap"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Лоадер -->
+<div *ngIf="isLoading" class="text-center py-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Загрузка...</span>
+  </div>
+</div>
+
+<!-- Если список пуст -->
+<div *ngIf="!isLoading && employees.length === 0" class="alert alert-info">
+  Сотрудники не найдены.
+</div>
+
+<!-- Вид: Таблица -->
+<div *ngIf="!isLoading && viewMode === 'table' && employees.length > 0" class="table-responsive">
+  <table class="table table-hover table-bordered shadow-sm bg-white">
+    <thead class="table-dark">
+      <tr>
+        <th (click)="toggleSort('Id')" role="button">ID <i class="bi bi-arrow-down-up small"></i></th>
+        <th (click)="toggleSort('Surname')" role="button">Фамилия Имя <i class="bi bi-arrow-down-up small"></i></th>
+        <th>Должность</th>
+        <th>Смена</th>
+        <th>Телефон</th>
+        <th class="text-center">Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let emp of employees">
+        <td>{{ emp.id }}</td>
+        <td>{{ emp.surname }} {{ emp.name }}</td>
+        <td><span class="badge bg-info text-dark">{{ emp.position }}</span></td>
+        <td>{{ emp.shift }}</td>
+        <td>{{ emp.phoneNumber }}</td>
+        <td class="text-center">
+          <a [routerLink]="['/employees/edit', emp.id]" class="btn btn-sm btn-outline-warning me-2">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <button class="btn btn-sm btn-outline-danger" (click)="deleteEmployee(emp.id)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Вид: Карточки -->
+<div *ngIf="!isLoading && viewMode === 'cards' && employees.length > 0" class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="col" *ngFor="let emp of employees">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="card-title text-primary">{{ emp.surname }} {{ emp.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ emp.position }}</h6>
+        <hr>
+        <p class="card-text mb-1"><strong>Смена:</strong> {{ emp.shift }}</p>
+        <p class="card-text"><strong>Тел:</strong> {{ emp.phoneNumber }}</p>
+      </div>
+      <div class="card-footer bg-transparent border-top-0 d-flex justify-content-end gap-2">
+        <a [routerLink]="['/employees/edit', emp.id]" class="btn btn-outline-warning btn-sm">Редактировать</a>
+        <button class="btn btn-outline-danger btn-sm" (click)="deleteEmployee(emp.id)">Удалить</button>
+      </div>
+    </div>
+  </div>
+</div>

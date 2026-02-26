@@ -1,0 +1,43 @@
+<div class="d-flex align-items-center justify-content-center vh-100 bg-light">
+  <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+    <div class="text-center mb-4">
+      <h3 class="fw-bold text-primary">Refinery CRM</h3>
+      <p class="text-muted">Вход в систему</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Username -->
+      <div class="mb-3">
+        <label for="username" class="form-label">Логин</label>
+        <input type="text"
+               id="username"
+               class="form-control"
+               formControlName="username"
+               [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+        <div class="invalid-feedback">Введите логин</div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Пароль</label>
+        <input type="password"
+               id="password"
+               class="form-control"
+               formControlName="password"
+               [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        <div class="invalid-feedback">Введите пароль</div>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger py-2">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Button -->
+      <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid || isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+        Войти
+      </button>
+    </form>
+  </div>
+</div>

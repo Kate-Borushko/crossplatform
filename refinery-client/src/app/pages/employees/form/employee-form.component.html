@@ -1,0 +1,60 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">{{ isEditMode ? 'Редактирование' : 'Создание' }} сотрудника</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Имя</label>
+              <input type="text" class="form-control" formControlName="name"
+                     [class.is-invalid]="form.get('name')?.invalid && form.get('name')?.touched">
+              <div class="invalid-feedback">Минимум 2 символа</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Фамилия</label>
+              <input type="text" class="form-control" formControlName="surname"
+                     [class.is-invalid]="form.get('surname')?.invalid && form.get('surname')?.touched">
+              <div class="invalid-feedback">Минимум 2 символа</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Должность</label>
+            <input type="text" class="form-control" formControlName="position"
+                   [class.is-invalid]="form.get('position')?.invalid && form.get('position')?.touched">
+            <div class="invalid-feedback">Обязательное поле (макс 100 символов)</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Смена</label>
+              <input type="text" class="form-control" formControlName="shift"
+                     [class.is-invalid]="form.get('shift')?.invalid && form.get('shift')?.touched">
+              <div class="invalid-feedback">Обязательное поле</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Телефон</label>
+              <input type="number" class="form-control" formControlName="phoneNumber"
+                     [class.is-invalid]="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched">
+              <div class="invalid-feedback">Только цифры</div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <a routerLink="/employees" class="btn btn-secondary">Отмена</a>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid || isLoading">
+              {{ isEditMode ? 'Сохранить изменения' : 'Создать' }}
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

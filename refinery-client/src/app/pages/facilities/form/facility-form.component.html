@@ -1,0 +1,63 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow">
+      <div class="card-header" [class.bg-success]="!isEditMode" [class.bg-warning]="isEditMode" [class.text-white]="true">
+        <h4 class="mb-0">{{ isEditMode ? 'Редактирование' : 'Добавление' }} установки</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+          <!-- Выбор сотрудника -->
+          <div class="mb-3">
+            <label class="form-label">Ответственный сотрудник</label>
+            <select class="form-select" formControlName="employeeId"
+                    [class.is-invalid]="form.get('employeeId')?.invalid && form.get('employeeId')?.touched">
+              <option [ngValue]="null" disabled>Выберите сотрудника...</option>
+              <option *ngFor="let emp of employees" [ngValue]="emp.id">
+                {{ emp.surname }} {{ emp.name }} ({{ emp.position }})
+              </option>
+            </select>
+            <div class="invalid-feedback">Необходимо выбрать сотрудника</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Название</label>
+              <input type="text" class="form-control" formControlName="name">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Тип</label>
+              <input type="text" class="form-control" formControlName="type">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Тип колонны</label>
+              <input type="text" class="form-control" formControlName="columnType">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Темп. Верх</label>
+              <input type="number" class="form-control" formControlName="temperatureTop">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Темп. Низ</label>
+              <input type="number" class="form-control" formControlName="temperatureBottom">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Давление Верх</label>
+              <input type="number" step="0.1" class="form-control" formControlName="pressureTop">
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-3">
+            <a routerLink="/facilities" class="btn btn-secondary">Отмена</a>
+            <button type="submit" class="btn" [class.btn-success]="!isEditMode" [class.btn-warning]="isEditMode" [disabled]="form.invalid || isLoading">
+              {{ isEditMode ? 'Сохранить изменения' : 'Создать' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
